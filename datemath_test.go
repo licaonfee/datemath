@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jszwedko/go-datemath"
+	"github.com/licaonfee/datemath"
 )
 
 // much are based on tests from Elasticsearch to ensure we handle dates in a compatible manner
@@ -556,8 +556,8 @@ func ExampleParse() {
 	}
 
 	//Output:
-	//2014-05-30 20:06:35.123 +0000 UTC
-	//2014-05-26 00:00:00 +0000 UTC
-	//2014-06-30 20:21:35.123 +0000 UTC
-	//2014-06-30 00:00:00 +0000 UTC
+	// 2014-05-30 20:06:35.123 +0000 UTC
+	// 2014-05-26 00:00:00 +0000 UTC
+	// 2014-06-30 20:21:35.123 +0000 UTC
+	// 2014-06-30 00:00:00 +0000 UTC
 }

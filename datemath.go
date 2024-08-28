@@ -17,6 +17,7 @@ anchor date can optionally be followed by one or more date math expressions, for
 	now/d	Round down to the nearest day
 
 The supported time units are:
+
 	y  Years
 	fy Fiscal years (by default same as a regular year, use WithStartOfFiscalYear to override)
 	Q  Annual quarters
@@ -30,7 +31,7 @@ The supported time units are:
 	m  Minutes
 	s  Seconds
 
-Compatibility with Elasticsearch datemath
+# Compatibility with Elasticsearch datemath
 
 This package aims to be a superset of Elasticsearch's expressions. That is, any datemath expression that is valid for
 Elasticsearch should evaluate in the same way here.
@@ -47,6 +48,7 @@ import (
 	"time"
 )
 
+// nolint: gochecknoinits // this is necessary for goyacc
 func init() {
 	// have goyacc parser return more verbose syntax error messages
 	yyErrorVerbose = true

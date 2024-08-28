@@ -1,9 +1,7 @@
-# go-datemath
+# datemath
 
-[![GoDoc](https://godoc.org/github.com/timberio/go-datemath?status.svg)](http://godoc.org/github.com/timberio/go-datemath)
-[![Circle CI](https://circleci.com/gh/timberio/go-datemath.svg?style=svg)](https://circleci.com/gh/timberio/go-datemath)
-[![Go Report Card](https://goreportcard.com/badge/github.com/timberio/go-datemath)](https://goreportcard.com/report/github.com/timberio/go-datemath)
-[![coverage](https://gocover.io/_badge/github.com/timberio/go-datemath?0 "coverage")](http://gocover.io/github.com/timberio/go-datemath)
+[![GoDoc](https://godoc.org/github.com/timberio/go-datemath?status.svg)](https://pkg.go.dev/github.com/licaonfee/datemath)
+[![Go Report Card](https://goreportcard.com/badge/github.com/timberio/go-datemath)](https://goreportcard.com/report/github.com/licaonfee/datemath)
 
 This library provides support for parsing datemath expressions compatibly with [Elasticsearch datemath
 expressions](https://www.elastic.co/guide/en/elasticsearch/reference/7.3/common-options.html#date-math). These are
@@ -22,7 +20,7 @@ expr, _ := datemath.Parse("now-15m")
 fmt.Println(t.Time(datemath.WithNow(now)))
 ```
 
-See [package documentation](http://godoc.org/github.com/timberio/go-datemath) for usage and more examples.
+See [package documentation](https://pkg.go.dev/github.com/licaonfee/datemath) for usage and more examples.
 
 ## Development / Contributing
 
