@@ -23,7 +23,24 @@ func TestParseAndEvaluate(t *testing.T) {
 		location *time.Location
 		roundUp  bool
 	}{
-
+		// full week
+		{
+			in:  "2025-07-21T00:00:00.00Z||/d-1w",
+			out: "2025-07-14T00:00:00.00Z",
+		},
+		{
+			in:  "2025-07-21T00:00:00.00Z||/d",
+			out: "2025-07-21T00:00:00.00Z",
+		},
+		// full day
+		{
+			in:  "2025-04-23T00:00:00Z||/d",
+			out: "2025-04-23T00:00:00Z",
+		},
+		{
+			in:  "2025-04-23T00:00:00Z||/d+1d",
+			out: "2025-04-24T00:00:00Z",
+		},
 		// basic dates
 		{
 			in:  "2014",

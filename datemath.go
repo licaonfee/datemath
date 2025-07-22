@@ -221,7 +221,7 @@ func Parse(s string) (Expression, error) {
 	yyParse(lexWrapper)
 
 	if len(lex.errors) > 0 {
-		return Expression{}, fmt.Errorf(strings.Join(lex.errors, "\n"))
+		return Expression{}, fmt.Errorf("%s", strings.Join(lex.errors, "\n"))
 	}
 
 	return Expression{input: s, mathExpression: lexWrapper.expression}, nil
