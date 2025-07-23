@@ -24,9 +24,9 @@ See [package documentation](https://pkg.go.dev/github.com/licaonfee/datemath) fo
 
 ## Extended expressions
 
-### Bounded Week (`W`)
+### Bounded Week (`Bw`)
 
-The `W` unit represents a bounded week, which always stays within a single month. When adding or subtracting bounded weeks:
+The `Bw` unit represents a bounded week, which always stays within a single month. When adding or subtracting bounded weeks:
 
 * The minimum value returned is always the first day of the current month.
 * The maximum value returned is always the first day of the next month.
@@ -39,7 +39,7 @@ This is useful for scenarios where week-based calculations should not cross into
 Suppose today is July 23, 2025:
 
 ```go
-expr, _ := datemath.Parse("2025-07-23||+3W")
+expr, _ := datemath.Parse("2025-07-23||+3Bw")
 result := expr.Time()
 fmt.Println(result.Format("2006-01-02")) // Output: 2025-08-01
 ```

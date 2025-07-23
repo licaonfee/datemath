@@ -440,15 +440,15 @@ func TestParseAndEvaluate(t *testing.T) {
 		// special cases
 		// week rounded to month
 		{
-			in:  "2025-05-03T00:00:00.000Z||/W", // this day is saturday
-			out: "2025-05-01T00:00:00.000Z",     // we expect 2025-05-01 because it was the first day
+			in:  "2025-05-03T00:00:00.000Z||/Bw", // this day is saturday
+			out: "2025-05-01T00:00:00.000Z",      // we expect 2025-05-01 because it was the first day
 		},
 		{
-			in:  "2025-07-29T00:00:00.000Z||/w+1W-1d", // results with bounded week
+			in:  "2025-07-29T00:00:00.000Z||/w+1Bw-1d", // results with bounded week
 			out: "2025-07-31T00:00:00.000Z",
 		},
 		{
-			in:  "2025-07-29T00:00:00.000Z||/w+11W-1d", // results with bounded week
+			in:  "2025-07-29T00:00:00.000Z||/w+11Bw-1d", // results with bounded week
 			out: "2025-07-31T00:00:00.000Z",
 		},
 	}
