@@ -23,6 +23,7 @@ func TestParseAndEvaluate(t *testing.T) {
 		location *time.Location
 		roundUp  bool
 	}{
+
 		// full week
 		{
 			in:  "2025-07-21T00:00:00.00Z||/d-1w",
@@ -434,6 +435,21 @@ func TestParseAndEvaluate(t *testing.T) {
 		{
 			in:  "definitely-nope",
 			err: fmt.Errorf(`syntax error: unexpected tUNIT, expecting tNOW or tDIGIT at character 2 starting with "d"`),
+		},
+
+		// special cases
+		// week rounded to month
+		{
+			in:  "2025-05-03T00:00:00.000Z||/W", // this day is saturday
+			out: "2025-05-01T00:00:00.000Z",     // we expect 2025-05-01 because it was the first day
+		},
+		{
+			in:  "2025-07-29T00:00:00.000Z||/w+1W-1d", // results with bounded week
+			out: "2025-07-31T00:00:00.000Z",
+		},
+		{
+			in:  "2025-07-29T00:00:00.000Z||/w+11W-1d", // results with bounded week
+			out: "2025-07-31T00:00:00.000Z",
 		},
 	}
 	for _, tt := range tests {

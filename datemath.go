@@ -70,6 +70,7 @@ const (
 	timeUnitHour          = timeUnit('h')
 	timeUnitMinute        = timeUnit('m')
 	timeUnitSecond        = timeUnit('s')
+	timeUnitBoundedWeek   = timeUnit("W")
 )
 
 func (u timeUnit) String() string {
@@ -278,6 +279,18 @@ func addUnits(factor int, u timeUnit) func(time.Time, Options) time.Time {
 			return t.AddDate(0, 0, 7*factor)
 		case timeUnitDay:
 			return t.AddDate(0, 0, factor)
+		case timeUnitBoundedWeek:
+			// All calculations in a bounded week only make sense within a single month.
+			// The maximum value returned is always the first day of the next month.
+			// The minimum value is always the first day of the current month.
+			today := t.AddDate(0, 0, 7*factor)
+			if t.Month() < today.Month() {
+				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location()).AddDate(0, 1, 0)
+			}
+			if t.Month() > today.Month() {
+				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+			}
+			return today
 		case timeUnitBusinessDay:
 
 			fn := options.BusinessDayFunc
@@ -349,6 +362,17 @@ func truncateUnits(u timeUnit) func(time.Time, Options) time.Time {
 			return t.Truncate(time.Minute)
 		case timeUnitSecond:
 			return t.Truncate(time.Second)
+		case timeUnitBoundedWeek:
+			diff := int(t.Weekday() - options.StartOfWeek)
+			today := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+			if diff < 0 {
+				today = today.AddDate(0, 0, -7)
+			}
+			today = today.AddDate(0, 0, -diff)
+			if today.Month() < t.Month() {
+				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+			}
+			return today
 		default:
 			panic(fmt.Sprintf("unknown time unit: %s", u))
 		}
