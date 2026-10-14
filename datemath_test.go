@@ -451,6 +451,68 @@ func TestParseAndEvaluate(t *testing.T) {
 			in:  "2025-07-29T00:00:00.000Z||/w+11Bw-1d", // results with bounded week
 			out: "2025-07-31T00:00:00.000Z",
 		},
+		{
+			in:  "2025-07-23T10:30:00.000Z||+1Bw", // inside the month the clock is kept
+			out: "2025-07-30T10:30:00.000Z",
+		},
+		{
+			in:  "2025-07-25T10:30:00.000Z||+1Bw", // lands in august, clamped to its first day
+			out: "2025-08-01T00:00:00.000Z",
+		},
+		{
+			in:  "2025-07-03T00:00:00.000Z||-1Bw", // lands in june, clamped to july 1
+			out: "2025-07-01T00:00:00.000Z",
+		},
+		{
+			in:  "2025-07-10T00:00:00.000Z||-1Bw",
+			out: "2025-07-03T00:00:00.000Z",
+		},
+		{
+			in:  "2025-07-31T00:00:00.000Z||/Bw", // thursday, the week starts in the same month
+			out: "2025-07-28T00:00:00.000Z",
+		},
+		// bounded week across a year boundary: the bounds are the first day of the month and
+		// the first day of the next month, also between december and january
+		{
+			in:  "2026-01-03T00:00:00.000Z||/Bw", // saturday, the week starts on 2025-12-29
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2026-01-01T00:00:00.000Z||/Bw", // thursday
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2025-12-31T00:00:00.000Z||/Bw", // inside december, not affected
+			out: "2025-12-29T00:00:00.000Z",
+		},
+		{
+			in:  "2025-12-29T00:00:00.000Z||+1Bw", // lands on 2026-01-05, clamped to january 1
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2025-12-25T00:00:00.000Z||+1Bw", // lands exactly on january 1
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2025-12-29T00:00:00.000Z||+3Bw",
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2026-01-03T00:00:00.000Z||-1Bw", // lands on 2025-12-27, clamped to january 1
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2026-01-01T00:00:00.000Z||-1Bw",
+			out: "2026-01-01T00:00:00.000Z",
+		},
+		{
+			in:  "2026-01-10T00:00:00.000Z||-1Bw", // stays in january
+			out: "2026-01-03T00:00:00.000Z",
+		},
+		{
+			in:  "2026-01-03T00:00:00.000Z||/w+1Bw", // week start in december, then one bounded week
+			out: "2026-01-01T00:00:00.000Z",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.in, func(t *testing.T) {

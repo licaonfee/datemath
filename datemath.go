@@ -283,12 +283,17 @@ func addUnits(factor int, u timeUnit) func(time.Time, Options) time.Time {
 			// All calculations in a bounded week only make sense within a single month.
 			// The maximum value returned is always the first day of the next month.
 			// The minimum value is always the first day of the current month.
+			// The bounds are compared as instants: comparing month numbers alone breaks
+			// across a year boundary (December+1Bw returned December 1, January-1Bw
+			// returned February 1).
+			first := time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+			next := first.AddDate(0, 1, 0)
 			today := t.AddDate(0, 0, 7*factor)
-			if t.Month() < today.Month() {
-				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location()).AddDate(0, 1, 0)
+			if today.Before(first) {
+				return first
 			}
-			if t.Month() > today.Month() {
-				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+			if today.After(next) {
+				return next
 			}
 			return today
 		case timeUnitBusinessDay:
@@ -369,8 +374,10 @@ func truncateUnits(u timeUnit) func(time.Time, Options) time.Time {
 				today = today.AddDate(0, 0, -7)
 			}
 			today = today.AddDate(0, 0, -diff)
-			if today.Month() < t.Month() {
-				today = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
+			// the week start never leaves the month of t, compared as an instant so a
+			// January date whose week starts in December rounds to January 1
+			if first := time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location()); today.Before(first) {
+				return first
 			}
 			return today
 		default:

@@ -30,7 +30,8 @@ The `Bw` unit represents a bounded week, which always stays within a single mont
 
 * The minimum value returned is always the first day of the current month.
 * The maximum value returned is always the first day of the next month.
-* Calculations that would cross a month boundary are clamped to these limits.
+* Calculations that would cross a month boundary are clamped to these limits, also between
+  December and January (the bounds are compared as instants, not as month numbers).
 
 This is useful for scenarios where week-based calculations should not cross into adjacent months.
 
